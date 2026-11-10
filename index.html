@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="豆图是一款免费、本地运行的图片转拼豆图纸工具，支持网格、色号、用量统计与高清导出。">
+  <title>豆图 · 图片转拼豆图纸</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="豆图首页">
+        <span class="brand-mark" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </span>
+        <span><strong>豆图</strong><small>BEAD PATTERN STUDIO</small></span>
+      </a>
+
+      <nav class="side-nav" aria-label="主导航">
+        <a class="nav-link active" href="#workspace">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+          图纸工作台
+        </a>
+        <button class="nav-link" id="openGuide" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5zM20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg>
+          新手使用指南
+        </button>
+      </nav>
+
+      <div class="sidebar-note">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 2.8 8.1 7 10 4.2-1.9 7-5.5 7-10V6zM9 12l2 2 4-4"/></svg>
+        <div><strong>图片不会离开你的设备</strong><p>所有转换均在浏览器本地完成，安心创作。</p></div>
+      </div>
+      <p class="sidebar-footer">MAKE SOMETHING LOVELY<br>ONE BEAD AT A TIME.</p>
+    </aside>
+
+    <main class="main" id="workspace">
+      <header class="topbar">
+        <div class="breadcrumb"><span>工作台</span><b>/</b><strong>图片转图纸</strong></div>
+        <div class="top-actions">
+          <span class="save-state"><i></i> 本地实时预览</span>
+          <button class="button button-primary" id="topExport" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 15v5h14v-5"/></svg>
+            导出图纸
+          </button>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <section class="page-heading">
+          <div>
+            <span class="eyebrow">FROM PIXELS TO BEADS</span>
+            <h1>把喜欢的图片，变成拼豆图纸。</h1>
+            <p>上传图片，调好尺寸和颜色，剩下的交给豆图。</p>
+          </div>
+          <div class="flow-steps" aria-label="制作流程">
+            <span class="done">1 <em>上传图片</em></span><i></i><span class="done">2 <em>生成图纸</em></span><i></i><span>3 <em>导出制作</em></span>
+          </div>
+        </section>
+
+        <div class="editor-layout">
+          <section class="panel controls-panel" aria-label="图纸设置">
+            <div class="panel-heading"><div><span class="section-number">01</span><h2>选择图片</h2></div><button class="text-button" id="useSample" type="button">恢复示例</button></div>
+
+            <label class="upload-zone" id="uploadZone" for="imageInput">
+              <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+              <span class="upload-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m-4 4 4-4 4 4M5 13v6h14v-6"/></svg></span>
+              <strong>点击或拖拽图片到这里</strong>
+              <span>支持 JPG、PNG、WebP，最大 15 MB</span>
+            </label>
+
+            <div class="source-preview">
+              <div class="source-image-wrap"><img id="sourceImage" alt="当前待转换图片"></div>
+              <div class="source-meta"><strong id="sourceName">像素小花</strong><span id="sourceInfo">内置示例图片</span></div>
+              <span class="source-check" title="图片已载入"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 12 3 3 7-7"/></svg></span>
+            </div>
+
+            <div class="control-divider"></div>
+            <div class="panel-heading"><div><span class="section-number">02</span><h2>调整图纸</h2></div><button class="icon-button" id="resetSettings" type="button" title="重置参数" aria-label="重置参数"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 2 7M4 4v6h6"/></svg></button></div>
+
+            <div class="control-group">
+              <div class="control-label"><label for="widthRange">图纸宽度</label><output id="widthValue" for="widthRange">32 豆</output></div>
+              <input id="widthRange" type="range" min="12" max="80" value="32" step="1">
+              <div class="range-caption"><span>更简洁</span><span>更精细</span></div>
+              <p class="field-hint" id="dimensionHint">高度将按原图比例自动计算</p>
+            </div>
+
+            <div class="control-group">
+              <div class="control-label"><label for="colorRange">最多使用颜色</label><output id="colorValue" for="colorRange">16 色</output></div>
+              <input id="colorRange" type="range" min="4" max="24" value="16" step="1">
+              <div class="range-caption"><span>更易拼制</span><span>更多细节</span></div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label standalone" for="paletteSelect">拼豆色系</label>
+              <div class="select-wrap"><select id="paletteSelect"><option value="classic">经典 24 色</option><option value="full">进阶 36 色</option><option value="soft">奶油柔和色系</option></select><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></div>
+            </div>
+
+            <div class="switch-row"><div><label for="ditherToggle">颜色过渡</label><p>让渐变更自然，细节更丰富</p></div><label class="switch"><input id="ditherToggle" type="checkbox"><span></span></label></div>
+            <div class="switch-row"><div><label for="backgroundToggle">去除浅色背景</label><p>保留主体，空白处不放拼豆</p></div><label class="switch"><input id="backgroundToggle" type="checkbox"><span></span></label></div>
+
+            <div class="control-divider"></div>
+            <div class="panel-heading compact"><div><span class="section-number">03</span><h2>图纸显示</h2></div></div>
+            <div class="switch-row"><label for="gridToggle">显示网格与坐标</label><label class="switch"><input id="gridToggle" type="checkbox" checked><span></span></label></div>
+            <div class="switch-row"><label for="symbolToggle">在拼豆上标注色号</label><label class="switch"><input id="symbolToggle" type="checkbox"><span></span></label></div>
+          </section>
+
+          <section class="panel preview-panel" aria-label="图纸预览">
+            <div class="preview-header">
+              <div><div class="title-line"><h2>图纸预览</h2><span class="status-badge"><i></i> 已生成</span></div><p id="previewDimensions">32 × 32 豆 · 1,024 颗</p></div>
+              <div class="preview-tools">
+                <button class="icon-button" id="zoomOut" type="button" title="缩小" aria-label="缩小"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+                <span id="zoomValue">100%</span>
+                <button class="icon-button" id="zoomIn" type="button" title="放大" aria-label="放大"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
+                <button class="icon-button" id="fitCanvas" type="button" title="适应窗口" aria-label="适应窗口"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+              </div>
+            </div>
+            <div class="canvas-stage" id="canvasStage">
+              <div class="canvas-holder" id="canvasHolder"><canvas id="patternCanvas" aria-label="生成的拼豆图纸"></canvas></div>
+              <div class="processing" id="processing" hidden><span></span><p>正在排好每一颗拼豆…</p></div>
+            </div>
+            <div class="preview-footer"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3"/><circle cx="12" cy="12" r="5"/></svg>点击任意拼豆，可高亮所有同色位置</span><button class="text-button" id="clearHighlight" type="button" hidden>取消高亮</button></div>
+          </section>
+
+          <aside class="right-column">
+            <section class="panel materials-panel">
+              <div class="panel-heading"><div><span class="section-number">04</span><h2>材料清单</h2></div><span class="tiny-label">按用量排序</span></div>
+              <div class="bead-total"><span>共计需要</span><div><strong id="totalBeads">1,024</strong><em>颗拼豆</em></div></div>
+              <div class="summary-grid"><div><span>图纸尺寸</span><strong id="summarySize">32 × 32</strong></div><div><span>实际颜色</span><strong id="actualColors">16 色</strong></div></div>
+              <div class="color-list-heading"><span>色号 / 颜色</span><span>数量</span></div>
+              <div class="color-list" id="colorList"></div>
+              <button class="text-button show-all" id="showAllColors" type="button" hidden>查看全部颜色</button>
+            </section>
+
+            <section class="panel export-panel">
+              <h2>导出与制作</h2>
+              <button class="button button-primary full-width" id="exportPng" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 15v5h14v-5"/></svg>下载高清图纸 <span>PNG</span></button>
+              <button class="button button-secondary full-width" id="exportCsv" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7zM15 3v5h4M10 12h6M10 16h6"/></svg>下载材料清单 <span>CSV</span></button>
+              <button class="button button-quiet full-width" id="printPattern" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V3h10v6M7 17H4V9h16v8h-3M7 14h10v7H7z"/></svg>打印图纸</button>
+            </section>
+
+            <section class="tip-card"><span class="tip-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4M8 14a6 6 0 1 1 8 0c-1 .8-1 2-1 2H9s0-1.2-1-2z"/></svg></span><div><strong>拼制小提示</strong><p>建议先用小尺寸试拼。颜色越少，备料和拼制越轻松。</p></div></section>
+          </aside>
+        </div>
+        <footer class="page-footer">用心拼出每一个小世界。<span>豆图 · 图片处理仅在本地进行</span></footer>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="guide-dialog" id="guideDialog">
+    <button class="dialog-close icon-button" id="closeGuide" type="button" aria-label="关闭指南"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    <span class="eyebrow">QUICK START</span><h2>三步做出你的拼豆图纸</h2>
+    <ol class="guide-list"><li><span>1</span><div><strong>选择一张清晰的图片</strong><p>主体明确、背景简单的图片效果更好。图片只会在你的浏览器中处理。</p></div></li><li><span>2</span><div><strong>调整尺寸与颜色</strong><p>宽度决定精细程度；颜色越少越容易备料。开启色号标注可定位每一颗豆。</p></div></li><li><span>3</span><div><strong>导出图纸和材料清单</strong><p>PNG 图纸适合查看与打印，CSV 清单包含每种色号的用量，方便采购。</p></div></li></ol>
+    <button class="button button-primary full-width" id="startCreating" type="button">开始创作</button>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="print-sheet" id="printSheet"><h1>豆图 · 拼豆图纸</h1><p id="printMeta"></p><img id="printImage" alt="打印用拼豆图纸"></div>
+  <script src="app.js"></script>
+</body>
+</html>
