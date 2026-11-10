@@ -404,8 +404,8 @@ function drawPattern(canvas, options = {}) {
   const exportMode = options.exportMode || false;
 
   if (!options.preserveCanvas) {
-    canvas.width = originX * 2 + width * cell;
-    canvas.height = originY * 2 + height * cell;
+    canvas.width = originX * 2 + width * cell + margin * 2;
+    canvas.height = originY * 2 + height * cell + margin * 2;
   }
   const ctx = canvas.getContext('2d');
   if (!options.preserveCanvas) {
@@ -416,16 +416,30 @@ function drawPattern(canvas, options = {}) {
   const startY = originY + margin;
 
   if (showGrid) {
-    ctx.fillStyle = '#8D958F';
-    ctx.font = `${Math.max(8, cell * .26)}px DM Sans, sans-serif`;
+    ctx.save();
+    ctx.fillStyle = '#5F6B64';
+    ctx.font = `600 ${Math.min(16, Math.max(10, cell * .38))}px DM Sans, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
+    const topY = originY + margin * .42;
+    const bottomY = startY + height * cell + margin * .58;
     for (let x = 0; x < width; x++) {
-      if (x === 0 || (x + 1) % 5 === 0) ctx.fillText(String(x + 1), startX + (x + .5) * cell, originY + margin * .52);
+      if (x === 0 || (x + 1) % 5 === 0) {
+        const labelX = startX + (x + .5) * cell;
+        ctx.fillText(String(x + 1), labelX, topY);
+        ctx.fillText(String(x + 1), labelX, bottomY);
+      }
     }
+    const leftX = originX + margin * .42;
+    const rightX = startX + width * cell + margin * .58;
     for (let y = 0; y < height; y++) {
-      if (y === 0 || (y + 1) % 5 === 0) ctx.fillText(String(y + 1), originX + margin * .48, startY + (y + .5) * cell);
+      if (y === 0 || (y + 1) % 5 === 0) {
+        const labelY = startY + (y + .5) * cell;
+        ctx.fillText(String(y + 1), leftX, labelY);
+        ctx.fillText(String(y + 1), rightX, labelY);
+      }
     }
+    ctx.restore();
   }
 
   for (let y = 0; y < height; y++) {
